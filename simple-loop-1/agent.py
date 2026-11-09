@@ -89,18 +89,33 @@ def roll_with_agent():
 
 
 def get_fortune(number):
-    """Stage 2. Plain single LLM call, no tools, no loop."""
+    """Stage 2. Generate the meaning and fortune in one structured LLM call."""
     resp = client.messages.create(
         model=FORTUNE_MODEL,
         max_tokens=300,
         messages=[{
             "role": "user",
-            "content": (f"I rolled a {number} on a six-sided die. Tell me what "
-                        f"my lucky number {number} means, then give me a short, "
-                        f"playful fortune. Keep it under 80 words."),
+            "content": (f"I rolled a {number} on a six-sided die. Explain what "
+                        "this lucky number means ( not scientifically, just for fun"
+                    "), then give me a fortune with a playful tone. "
+                        "Keep both fields under 80 words combined and use plain text."),
         }],
+        output_config={
+            "format": {
+                "type": "json_schema",
+                "schema": {
+                    "type": "object",
+                    "properties": {
+                        "meaning": {"type": "string"},
+                        "fortune": {"type": "string"},
+                    },
+                    "required": ["meaning", "fortune"],
+                    "additionalProperties": False,
+                },
+            },
+        },
     )
-    return resp.content[0].text
+    return json.loads(resp.content[0].text)
 
 
 if __name__ == "__main__":
@@ -108,5 +123,6 @@ if __name__ == "__main__":
     if roll is None:
         print("No valid roll. Skipping fortune.")
     else:
-        print(f"\nYou rolled a {roll}.\n")
-        print(get_fortune(roll))
+        result = get_fortune(roll)
+        print(f"\n**What Your {roll} Means** {result['meaning']}")
+        print(f"\n**Your Fortune** {result['fortune']}")
