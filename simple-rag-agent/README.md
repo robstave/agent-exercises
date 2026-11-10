@@ -18,7 +18,7 @@ flowchart TD
     Clear --> Input
     Command -->|Question| Context["Add recent conversation; start question deadline"]
     Context --> Limits{"Turn and time limits allow another call?"}
-    Limits -->|Yes| Model["Call Claude Haiku 5-5 with search_docs tool"]
+    Limits -->|Yes| Model["Call configured model with search_docs tool"]
     Model --> Usage["Accumulate returned input and output tokens"]
     Usage --> Response{"Model response?"}
     Response -->|Tool calls| Search["Validate calls; embed queries and rank document chunks"]
@@ -54,6 +54,8 @@ On Windows use `.venv\Scripts\python.exe` instead of `.venv/bin/python`.
 `RAG_MODEL` optionally overrides `claude-haiku-5-5`. Live chat makes paid Anthropic
 API calls and needs HTTPS access to `api.anthropic.com` and an account with model
 access. No Ollama, Chroma server, LangChain, or embedding API key is required.
+Startup prints the configured model ID actually used for requests. An unset or
+blank `RAG_MODEL` uses the default.
 
 ## Semantic retrieval
 
