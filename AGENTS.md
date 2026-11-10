@@ -9,3 +9,10 @@ These instructions apply to all projects in this repository.
   select `claude-haiku-4-5` as a cost-saving alternative.
 - Respect explicitly configured model overrides. When displaying the model in
   agent output, print the resolved configuration rather than a hardcoded label.
+
+## README style
+
+- Explain things at about 80% of the way to ASD-STE100.
+- Use short sentences, active voice, and one idea per sentence.
+- Keep identifiers, commands, numbers, and every caveat exactly as written.
+- If something is uncertain, say so in one plain sentence.
