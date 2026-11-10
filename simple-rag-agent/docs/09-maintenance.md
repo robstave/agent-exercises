@@ -1,0 +1,11 @@
+# Maintenance closure and service recovery
+
+Both vessels stop scheduled service from November 3 through November 9 inclusive for the annual inspection period. Regular departures resume on November 10 only after the inspection signoffs are complete. These dates supersede the ordinary seasonal timetable. A timetable showing a Tuesday departure does not create a sailing during the published closure. The handbook does not include real-time inspection results.
+
+Kestrel's inspection covers its ramp hinges, passenger restraints, navigation instruments, and engine cooling circuit. Minnow additionally receives a connector-channel steering check and a cargo tie-down inspection. Certified mechanics record findings in the maintenance register. Crew training exercises during the closure are not public passenger sailings, and staff cannot sell places on them as informal substitutes.
+
+For planned maintenance announced before a booking is made, the desk should offer dates outside the closure. If an existing booked sailing is removed for maintenance, the passenger receives the operator-cancellation choice of an unused-journey refund or a no-fee move to available service. The cooperative does not automatically hire replacement vessels. Anyone arranging a medical visit should consider the published closure when choosing an appointment, while urgent medical transport remains outside Northstar's passenger service.
+
+An unplanned mechanical fault can affect one vessel without closing the other route. Minnow cannot replace Kestrel on the main route because its certification is limited to the sheltered connector. Kestrel cannot enter Mossbank's narrow channel. A promise to swap boats would therefore be misleading even if one vessel appears idle.
+
+After repairs, the duty captain performs an empty proving run and Iona Reed authorizes return to passenger service. Weather restrictions still apply after mechanical clearance. Cargo backlog recovery gives reserved clinic medicine totes priority, followed by ordinary cargo in original booking order. Passenger rebooking uses available capacity; neither membership nor a previous cancellation permits exceeding certified passenger or bicycle limits.
