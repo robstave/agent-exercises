@@ -5,6 +5,39 @@ Ten substantial Markdown documents cover connected policies, schedules, and edge
 cases. Haiku chooses when to call `search_docs`, can search repeatedly, and answers
 with source citations. Nothing here books real travel.
 
+## Flow
+
+```mermaid
+flowchart TD
+    Start([Start]) --> Docs["Load docs/*.md and split into overlapping chunks"]
+    Docs --> Index["Embed locally with FastEmbed; build in-memory index"]
+    Index --> Input["Read terminal input"]
+    Input --> Command{"Command?"}
+    Command -->|exit or EOF| Exit([End session])
+    Command -->|/clear| Clear["Clear conversation history"]
+    Clear --> Input
+    Command -->|Question| Context["Add recent conversation; start question deadline"]
+    Context --> Limits{"Turn and time limits allow another call?"}
+    Limits -->|Yes| Model["Call Claude Haiku 5-5 with search_docs tool"]
+    Model --> Usage["Accumulate returned input and output tokens"]
+    Usage --> Response{"Model response?"}
+    Response -->|Tool calls| Search["Validate calls; embed queries and rank document chunks"]
+    Index -.-> Search
+    Search --> Results["Return source snippets or tool errors to Haiku"]
+    Results --> Limits
+    Response -->|Complete answer| History["Retain bounded question and answer history"]
+    Response -->|Incomplete or empty| Failure["Report incomplete answer; leave history unchanged"]
+    Limits -->|No| Failure
+    Model -->|API error or timeout| Failure
+    Search -->|Retrieval failure or deadline| Failure
+    History --> Output["Print answer, elapsed time, turns, and token totals"]
+    Failure --> Output
+    Output --> Input
+```
+
+Model weights are cached on disk; the document index and conversation stay in
+memory. The question deadline covers the model/search loop, not startup indexing.
+
 ## Setup (Python 3.11+)
 
 From the repository root on Linux/macOS:
