@@ -18,7 +18,7 @@ simple-rag-agent/.venv/bin/python simple-rag-agent/agent.py
 ```
 
 On Windows use `.venv\Scripts\python.exe` instead of `.venv/bin/python`.
-`RAG_MODEL` optionally overrides `claude-haiku-4-5`. Live chat makes paid Anthropic
+`RAG_MODEL` optionally overrides `claude-haiku-5-5`. Live chat makes paid Anthropic
 API calls and needs HTTPS access to `api.anthropic.com` and an account with model
 access. No Ollama, Chroma server, LangChain, or embedding API key is required.
 
