@@ -1,0 +1,4 @@
+anthropic>=0.40,<3
+python-dotenv>=1,<2
+fastembed>=0.7,<0.8
+numpy>=1.26,<3
