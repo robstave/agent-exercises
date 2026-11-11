@@ -11,7 +11,10 @@ import anthropic
 from dotenv import load_dotenv
 
 load_dotenv(Path(__file__).with_name(".env"))
-client = anthropic.Anthropic()
+API_TIMEOUT_SECONDS = 30.0
+# Apply the timeout to both model stages. Disable SDK retries so a timeout
+# surfaces immediately instead of starting another API attempt.
+client = anthropic.Anthropic(timeout=API_TIMEOUT_SECONDS, max_retries=0)
 ROLL_MODEL = "claude-haiku-4-5"       # cheap model drives the tool loop
 FORTUNE_MODEL = "claude-sonnet-5-5"   # better writer for the fortune
 MAX_STEPS = 10
@@ -119,10 +122,16 @@ def get_fortune(number):
 
 
 if __name__ == "__main__":
-    roll = roll_with_agent()
-    if roll is None:
-        print("No valid roll. Skipping fortune.")
-    else:
-        result = get_fortune(roll)
-        print(f"\n**What Your {roll} Means** {result['meaning']}")
-        print(f"\n**Your Fortune** {result['fortune']}")
+    try:
+        roll = roll_with_agent()
+        if roll is None:
+            print("No valid roll. Skipping fortune.")
+        else:
+            result = get_fortune(roll)
+            print(f"\n**What Your {roll} Means** {result['meaning']}")
+            print(f"\n**Your Fortune** {result['fortune']}")
+    except anthropic.APITimeoutError:
+        raise SystemExit(
+            f"API request timed out (timeout setting: {API_TIMEOUT_SECONDS:g}s). "
+            "Run the agent again to retry."
+        ) from None
