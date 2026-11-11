@@ -196,7 +196,7 @@ def main():
     agent = importlib.util.module_from_spec(spec)
     spec.loader.exec_module(agent)
     # Bound network waits and disable SDK retries so failed evals remain visible.
-    agent.client = agent.client.with_options(timeout=30.0, max_retries=0)
+    agent.client = agent.client.with_options(timeout=agent.API_TIMEOUT_SECONDS, max_retries=0)
     judge_model = args.judge_model or agent.FORTUNE_MODEL
     cases = [
         # The first three scenarios test recovery from increasing failure counts.

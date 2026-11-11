@@ -1,6 +1,52 @@
+# Simple loop 1 — dice and fortunes
 
+[Back to the playground](../README.md)
 
-<mermaid>
+This example has two stages. First, a model requests a six-sided dice tool. The
+tool fails about one-third of the time, and errors are fed back to the model so
+it can retry. Python accepts a numeric result and stops the loop. Second, a
+separate model call returns structured JSON with `meaning` and `fortune` fields.
+Python prints them under **What Your {roll} Means** and **Your Fortune**.
+
+The loop allows up to 10 model turns, adds a warning on the fifth identical tool
+request, and aborts before executing the eighth identical request. A response
+without a tool request also ends the loop. If there is no valid roll, fortune
+generation is skipped.
+
+## Setup and run
+
+Run these PowerShell commands from the repository root.
+
+```powershell
+python -m venv simple-loop-1/.venv
+.\simple-loop-1\.venv\Scripts\python.exe -m pip install -r simple-loop-1/requirements-dev.txt
+```
+
+Set `ANTHROPIC_API_KEY` in your environment or create `simple-loop-1/.env` with
+`ANTHROPIC_API_KEY=your-key`. The example's Git ignore rules exclude that file.
+Model names are configured in [agent.py](agent.py).
+
+```powershell
+.\simple-loop-1\.venv\Scripts\python.exe simple-loop-1/agent.py
+```
+
+## API timeouts
+
+Both model stages use the SDK timeout setting of 30 seconds, configured with
+`API_TIMEOUT_SECONDS` in `agent.py`. SDK retries are disabled. A timeout ends
+the command with an explanatory message and a nonzero exit status. Run the
+command again to retry. Dice-tool failures still follow the agent retry loop.
+
+The SDK timeout governs network operations; it is not a deadline for the whole
+multi-call agent run. Evaluations use the same setting for generation and judging
+and record timeout failures before continuing to the next case.
+
+## Flow
+
+The retry endpoint returns to the model with the error. It is drawn as an endpoint
+to keep the diagram flowing from top to bottom.
+
+```mermaid
 
 flowchart TD
     A([Start]) --> B["Ask the model to roll the die"]
@@ -16,7 +62,7 @@ flowchart TD
     G -->|No| H
     G -->|Yes| K([Return to the model with the error])
 
-    </mermaid>
+```
 
 ## Tests
 
@@ -71,3 +117,17 @@ include requests, responses, model names, checks, ratings, explanations, timing,
 and token totals. Use `--output path/to/report.json` to choose a report location.
 
 See [the evaluation guide](evals/README.md) for additional details.
+
+## Human ratings and judging cost
+
+The runner automatically supplies the rubric, die roll, and generated fortune to
+a separate judging call. Human ratings are optional. To assess the judge, score
+a small set of fortunes yourself and compare the judge's ratings on those same
+outputs. A few examples could later be added to its prompt to clarify your
+standards. The current runner uses the rubric and current output only.
+
+Each valid fortune adds a judging call. Compare its token usage with generation
+usage, keep repeat counts modest while experimenting, and run live evaluations
+when changing prompts or models. The mocked unit tests can run frequently.
+
+See the root README for [ideas to go further](../README.md#ideas-to-go-further).
